@@ -1,0 +1,2 @@
+apply<ImportmapPlugin>()
+apply<AssetDownloadPlugin>()
