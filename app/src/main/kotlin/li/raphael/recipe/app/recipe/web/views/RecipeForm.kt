@@ -31,6 +31,7 @@ private fun FlowContent.createRecipeForm() {
         uButton {
             type = ButtonType.submit
             data["form-validation-target"] = "button"
+            data["turbo-submits-with"] = t("recipes.create.in-progress")
             +t("recipes.create.submit")
         }
     }
