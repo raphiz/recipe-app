@@ -8,3 +8,5 @@ Turbo.setConfirmMethod((message, element, submitter) => {
     return dialog.showConfirm(title, message, buttonStyle)
 })
 
+const eventSource = new EventSource("/events");
+Turbo.session.connectStreamSource(eventSource);

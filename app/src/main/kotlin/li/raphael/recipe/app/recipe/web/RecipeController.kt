@@ -13,6 +13,7 @@ import li.raphael.recipe.app.recipe.RecipeId
 import li.raphael.recipe.app.recipe.RecipeRepository
 import li.raphael.recipe.app.recipe.web.views.*
 import li.raphael.recipe.app.shared.Page
+import li.raphael.recipe.app.shared.SSEService
 import li.raphael.recipe.app.shared.components.NOTIFICATION_AREA
 import li.raphael.recipe.app.shared.components.uNotification
 import org.springframework.http.HttpStatus
@@ -28,6 +29,7 @@ import java.util.*
 @Controller
 class RecipeController(
     private val recipeRepository: RecipeRepository,
+    private val sseService: SSEService,
 ) {
 
     @GetMapping(RecipeRoutes.list)
@@ -47,6 +49,11 @@ class RecipeController(
     ): View {
         val recipeId = RecipeId(UUID.fromString(id))
         recipeRepository.delete(recipeId)
+
+        sseService.broadcast {
+            turboStream(StreamAction.REMOVE, recipeId.domId())
+        }
+
         return Routes.redirect(Routes.recipes.list(searchText, page), HttpStatus.SEE_OTHER)
     }
 
