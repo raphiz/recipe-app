@@ -1,6 +1,7 @@
 package li.raphael.recipe.app.recipe.web.views
 
 import kotlinx.html.*
+import li.raphael.kotlinhtml.tags.turboFrame
 import li.raphael.kotlinhtml.templatecontext.t
 import li.raphael.kotlinhtml.utils.dataAttributes
 import li.raphael.recipe.app.RecipeRoutes
@@ -13,24 +14,30 @@ import li.raphael.recipe.app.shared.components.*
 import li.raphael.recipe.app.shared.components.IconType.*
 import li.raphael.recipe.app.shared.components.UButtonVariant.UNSTYLED
 
+const val recipeListId = "recipe-list"
+
 fun renderRecipeList(recipes: PagedList<Recipe>, searchText: String?) =
     renderPage(t("recipes.list.title")) {
         recipeList(recipes, searchText)
     }
 
 private fun FlowContent.recipeList(recipes: PagedList<Recipe>, searchText: String?) {
-    uSearchForm(fieldName = RecipeRoutes.Params.searchFieldName, searchText = searchText)
+    uSearchForm(fieldName = RecipeRoutes.Params.searchFieldName, searchText = searchText) {
+        attributes["data-turbo-frame"] = recipeListId
+    }
     renderPagedCardList(recipes, searchText)
 }
 
 fun FlowContent.renderPagedCardList(recipes: PagedList<Recipe>, searchText: String?) {
-    uCardGroup(
-        recipes.map { recipe ->
-            recipe.id.domId() to { recipeCard(recipe, recipes.page, searchText) }
-        },
-    )
-    uPagination(recipes) { page ->
-        Routes.recipes.list(searchText, page)
+    turboFrame(recipeListId) {
+        uCardGroup(
+            recipes.map { recipe ->
+                recipe.id.domId() to { recipeCard(recipe, recipes.page, searchText) }
+            },
+        )
+        uPagination(recipes) { page ->
+            Routes.recipes.list(searchText, page)
+        }
     }
 }
 
