@@ -1,6 +1,11 @@
 package li.raphael.recipe.app.recipe.web
 
 import kotlinx.html.*
+import li.raphael.kotlinhtml.html.HtmlView
+import li.raphael.kotlinhtml.html.TEXT_VND_TURBO_STREAM
+import li.raphael.kotlinhtml.tags.StreamAction
+import li.raphael.kotlinhtml.tags.turboStream
+import li.raphael.kotlinhtml.templatecontext.t
 import li.raphael.recipe.app.RecipeRoutes
 import li.raphael.recipe.app.Routes
 import li.raphael.recipe.app.recipe.Recipe
@@ -8,6 +13,8 @@ import li.raphael.recipe.app.recipe.RecipeId
 import li.raphael.recipe.app.recipe.RecipeRepository
 import li.raphael.recipe.app.recipe.web.views.*
 import li.raphael.recipe.app.shared.Page
+import li.raphael.recipe.app.shared.components.NOTIFICATION_AREA
+import li.raphael.recipe.app.shared.components.uNotification
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -52,6 +59,10 @@ class RecipeController(
     fun postCreate(@RequestParam("title") recipeTitle: String): View {
         Thread.sleep(2_000)
         recipeRepository.save(Recipe(RecipeId.random(), recipeTitle, null, URI("https://img.freepik.com/free-vector/realistic-white-plate-isolated_1284-41743.jpg")))
-        return Routes.redirect(Routes.recipes.create, HttpStatus.SEE_OTHER)
+        return HtmlView(HttpStatus.OK, TEXT_VND_TURBO_STREAM) {
+            turboStream(StreamAction.APPEND, NOTIFICATION_AREA) {
+                uNotification(t("recipes.create.created", recipeTitle))
+            }
+        }
     }
 }
