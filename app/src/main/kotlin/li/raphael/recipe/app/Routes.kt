@@ -3,6 +3,7 @@ package li.raphael.recipe.app
 import li.raphael.recipe.app.recipe.RecipeId
 import li.raphael.recipe.app.shared.Page
 import li.raphael.recipe.app.shared.withPagination
+import li.raphael.recipe.app.shared.withQueryParameters
 import org.springframework.http.HttpStatus
 import org.springframework.web.servlet.View
 import org.springframework.web.servlet.view.RedirectView
@@ -22,8 +23,9 @@ object RecipeRoutes {
     const val create = "/recipes/new"
     const val delete = "/recipes/{id}/delete"
 
-    fun list(page: Page?): String = list
+    fun list(searchText: String?, page: Page?): String = list
         .withPagination(page)
+        .withQueryParameters(Params.searchFieldName to searchText)
 
     fun delete(id: RecipeId): String = "/recipes/${id.value}/delete"
 

@@ -29,17 +29,18 @@ class RecipeController(
         page: Page,
     ): View {
         val recipes = recipeRepository.list(searchText, page)
-        return renderRecipeList(recipes)
+        return renderRecipeList(recipes, searchText)
     }
 
     @PostMapping(RecipeRoutes.delete)
     fun delete(
         @PathVariable id: String,
         page: Page,
+        @RequestParam(RecipeRoutes.Params.searchFieldName) searchText: String?,
     ): View {
         val recipeId = RecipeId(UUID.fromString(id))
         recipeRepository.delete(recipeId)
-        return Routes.redirect(Routes.recipes.list(page), HttpStatus.SEE_OTHER)
+        return Routes.redirect(Routes.recipes.list(searchText, page), HttpStatus.SEE_OTHER)
     }
 
     @GetMapping(RecipeRoutes.create)

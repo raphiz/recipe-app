@@ -2,6 +2,7 @@ package li.raphael.recipe.app.recipe.web.views
 
 import kotlinx.html.*
 import li.raphael.kotlinhtml.templatecontext.t
+import li.raphael.recipe.app.RecipeRoutes
 import li.raphael.recipe.app.Routes
 import li.raphael.recipe.app.components.renderPage
 import li.raphael.recipe.app.recipe.Recipe
@@ -11,28 +12,28 @@ import li.raphael.recipe.app.shared.components.*
 import li.raphael.recipe.app.shared.components.IconType.*
 import li.raphael.recipe.app.shared.components.UButtonVariant.UNSTYLED
 
-fun renderRecipeList(recipes: PagedList<Recipe>) =
+fun renderRecipeList(recipes: PagedList<Recipe>, searchText: String?) =
     renderPage(t("recipes.list.title")) {
-        recipeList(recipes)
+        recipeList(recipes, searchText)
     }
 
-private fun FlowContent.recipeList(recipes: PagedList<Recipe>) {
-    // TODO: Add search form here
-    renderPagedCardList(recipes)
+private fun FlowContent.recipeList(recipes: PagedList<Recipe>, searchText: String?) {
+    uSearchForm(fieldName = RecipeRoutes.Params.searchFieldName, searchText = searchText)
+    renderPagedCardList(recipes, searchText)
 }
 
-fun FlowContent.renderPagedCardList(recipes: PagedList<Recipe>) {
+fun FlowContent.renderPagedCardList(recipes: PagedList<Recipe>, searchText: String?) {
     uCardGroup(
         recipes.map { recipe ->
-            recipe.id.domId() to { recipeCard(recipe, recipes.page) }
+            recipe.id.domId() to { recipeCard(recipe, recipes.page, searchText) }
         },
     )
     uPagination(recipes) { page ->
-        Routes.recipes.list(page)
+        Routes.recipes.list(searchText, page)
     }
 }
 
-private fun FlowContent.recipeCard(recipe: Recipe, currentPage: Page) {
+private fun FlowContent.recipeCard(recipe: Recipe, currentPage: Page, searchText: String?) {
     uCard(
         title = {
             if (recipe.source != null) a(href = recipe.source.toString()) { +recipe.title } else +recipe.title
@@ -46,15 +47,16 @@ private fun FlowContent.recipeCard(recipe: Recipe, currentPage: Page) {
             }
         },
         footer = {
-            deleteRecipeButton(recipe, currentPage)
+            deleteRecipeButton(recipe, currentPage, searchText)
         },
     )
 }
 
-private fun FlowContent.deleteRecipeButton(recipe: Recipe, currentPage: Page) {
+private fun FlowContent.deleteRecipeButton(recipe: Recipe, currentPage: Page, searchText: String?) {
     form(action = Routes.recipes.delete(recipe.id), method = FormMethod.post) {
         hiddenInput(name = PAGE_SIZE) { value = "${currentPage.size}" }
         hiddenInput(name = PAGE_OFFSET) { value = "${currentPage.offset}" }
+        hiddenInput(name = RecipeRoutes.Params.searchFieldName) { value = searchText ?: "" }
         uButton(UNSTYLED) {
             uIcon(DELETE)
             uScreenReaderOnly { +t("recipes.delete.confirm.title", recipe.title) }
