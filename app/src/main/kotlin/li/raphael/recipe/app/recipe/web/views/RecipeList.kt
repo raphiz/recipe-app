@@ -61,6 +61,8 @@ private fun FlowContent.deleteRecipeButton(recipe: Recipe, currentPage: Page, se
         uButton(UNSTYLED) {
             dataAttributes(
                 "turbo-confirm" to t("recipes.delete.confirm.message", recipe.title),
+                "turbo-confirm-title" to t("recipes.delete.confirm.title", recipe.title),
+                "turbo-confirm-button-style" to UButtonVariant.SECONDARY.classNames,
             )
             uIcon(DELETE)
             uScreenReaderOnly { +t("recipes.delete.confirm.title", recipe.title) }

@@ -41,6 +41,7 @@ fun renderPage(
                 uMain(id = mainContainerId, title = title) {
                     content()
                 }
+                confirmDialogTemplate()
             }
         }
     }
