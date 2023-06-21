@@ -2,6 +2,7 @@ package li.raphael.recipe.app.recipe.web.views
 
 import kotlinx.html.*
 import li.raphael.kotlinhtml.templatecontext.t
+import li.raphael.kotlinhtml.utils.dataAttributes
 import li.raphael.recipe.app.RecipeRoutes
 import li.raphael.recipe.app.Routes
 import li.raphael.recipe.app.components.renderPage
@@ -58,6 +59,9 @@ private fun FlowContent.deleteRecipeButton(recipe: Recipe, currentPage: Page, se
         hiddenInput(name = PAGE_OFFSET) { value = "${currentPage.offset}" }
         hiddenInput(name = RecipeRoutes.Params.searchFieldName) { value = searchText ?: "" }
         uButton(UNSTYLED) {
+            dataAttributes(
+                "turbo-confirm" to t("recipes.delete.confirm.message", recipe.title),
+            )
             uIcon(DELETE)
             uScreenReaderOnly { +t("recipes.delete.confirm.title", recipe.title) }
         }
