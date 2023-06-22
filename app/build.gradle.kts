@@ -24,7 +24,7 @@ dependencies {
 }
 
 importmap {
-    download("@hotwired/stimulus", "3.2.1")
+    download("@hotwired/stimulus", "3.2.2")
     download("@hotwired/turbo", "7.3.0")
 }
 

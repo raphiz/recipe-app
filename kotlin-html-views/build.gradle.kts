@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api("org.jetbrains.kotlinx:kotlinx-html-jvm:0.8.0")
+    api("org.jetbrains.kotlinx:kotlinx-html-jvm:0.10.1")
     implementation("org.springframework.boot:spring-boot-starter-web")
     compileOnly("org.springframework.boot:spring-boot-devtools")
 
