@@ -4,13 +4,14 @@ import li.raphael.recipe.app.ExampleDataGenerator
 import li.raphael.recipe.app.shared.Page
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.core.io.DefaultResourceLoader
 
 internal class ExampleDataGeneratorTest {
 
     @Test
     fun `insertExampleData inserts multiple entries into the repository`() {
         val recipeRepository = InMemoryRecipeRepository(mutableListOf())
-        val generator = ExampleDataGenerator(recipeRepository)
+        val generator = ExampleDataGenerator(recipeRepository, DefaultResourceLoader())
 
         generator.insertExampleData()
 

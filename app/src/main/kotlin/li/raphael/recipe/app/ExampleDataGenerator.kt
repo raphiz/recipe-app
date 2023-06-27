@@ -5,18 +5,19 @@ import li.raphael.recipe.app.recipe.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
+import org.springframework.core.io.ResourceLoader
 import org.springframework.stereotype.Component
-import org.springframework.util.ResourceUtils
 import java.net.URI
 
 @Component
 class ExampleDataGenerator(
     private val recipeRepository: RecipeRepository,
+    private val resourceLoader: ResourceLoader,
     @Value("\${insert-example-data-on-startup:false}") private val insertExampleDataOnStartup: Boolean = false,
 ) {
     fun insertExampleData() {
         val mapper = ObjectMapper()
-        val readTree = mapper.readTree(ResourceUtils.getFile("classpath:data/recipes.min.json"))
+        val readTree = mapper.readTree(resourceLoader.getResource("classpath:/data/recipes.min.json").contentAsByteArray)
         return readTree.asSequence().map {
             Recipe(
                 id = RecipeId.random(),
