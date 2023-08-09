@@ -1,3 +1,7 @@
+result
+.devenv*
+devenv.local.nix
+
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar

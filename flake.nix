@@ -1,30 +1,45 @@
 {
-  description = "Development environment";
+  description = "Recipe App";
+
+  nixConfig = {
+    experimental-features = "nix-command flakes";
+  };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
+    devenv.url = "github:cachix/devenv";
   };
 
   outputs = inputs @ {
     self,
-    nixpkgs,
-    flake-utils,
+    flake-parts,
     ...
   }:
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs {inherit system;};
-      jdk = pkgs.jdk19_headless;
-      gradle = pkgs.writeShellScriptBin "gradle" ''exec $REPOSITORY_ROOT/gradlew "$@"'';
-    in {
-      devShell = pkgs.mkShellNoCC {
-        buildInputs = with pkgs; [jdk gradle];
-        shellHook = ''
-          export REPOSITORY_ROOT=$(pwd)
-        '';
-      };
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux" "x86_64-darwin" "aarch64-darwin" "aarch64-linux"];
+      imports = [inputs.devenv.flakeModule];
+      perSystem = {pkgs, ...}: {
+        formatter = pkgs.alejandra;
 
-      # enable formatting via `nix fmt`
-      formatter = pkgs.alejandra; # or nixpkgs-fmt;
-    });
+        devenv.shells.default = {config, ...}: {
+          languages.java = {
+            enable = true;
+            jdk.package = pkgs.jdk19_headless;
+          };
+
+          pre-commit.hooks.ktlint = {
+            enable = true;
+            name = "ktlint";
+            files = "\\.kt$";
+            entry = "''${pkgs.ktlint}/bin/ktlint";
+          };
+
+          pre-commit.hooks = {
+            alejandra.enable = true;
+          };
+
+          scripts.gradle.exec = ''exec $DEVENV_ROOT/gradlew "$@"'';
+        };
+      };
+    };
 }

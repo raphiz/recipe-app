@@ -29,6 +29,12 @@ tasks.register("check") {
     dependsOn(subprojects.map { ":${it.name}:$name" })
 }
 
+tasks.register("assemble") {
+    group = mainBuildGroup
+    description = "Build standalone application without any checks (tests)"
+    dependsOn(subprojects.map { ":app:$name" })
+}
+
 tasks.register("run") {
     group = mainBuildGroup
     description = "Build and run as standalone application"
