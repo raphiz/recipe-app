@@ -2,10 +2,6 @@ plugins {
     `kotlin-dsl`
 }
 
-repositories {
-    mavenCentral()
-}
-
 tasks.validatePlugins.configure {
     enableStricterValidation.set(true)
 }

@@ -1,10 +1,36 @@
 rootProject.name = "recipe-app"
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("gradle/plugins")
+    repositories {
+        System.getenv("MAVEN_SOURCE_REPOSITORY")?.let {
+            maven(it) {
+                metadataSources {
+                    gradleMetadata()
+                    mavenPom()
+                    artifact()
+                }
+            }
+        } ?: gradlePluginPortal()
+    }
 }
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+dependencyResolutionManagement {
+    repositories {
+        System.getenv("MAVEN_SOURCE_REPOSITORY")?.let {
+            maven(it) {
+                metadataSources {
+                    gradleMetadata()
+                    mavenPom()
+                    artifact()
+                }
+            }
+        } ?: mavenCentral()
+    }
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+}
 
 plugins {
     id("com.gradle.enterprise") version ("3.13")

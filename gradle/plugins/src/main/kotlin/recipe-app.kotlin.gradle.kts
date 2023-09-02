@@ -6,10 +6,6 @@ plugins {
     kotlin("jvm")
 }
 
-repositories {
-    mavenCentral()
-}
-
 val javaVersion = JavaLanguageVersion.of("17")
 
 java {
