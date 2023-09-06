@@ -1,0 +1,7 @@
+# https://editorconfig.org
+root = true
+
+[*.{kt,kts}]
+ktlint_code_style = ktlint_official
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_import-ordering = disabled

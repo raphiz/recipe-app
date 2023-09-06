@@ -12,5 +12,5 @@ dependencies {
 
     implementation("org.springframework.boot:org.springframework.boot.gradle.plugin:3.1.0")
 
-    implementation("com.diffplug.spotless:spotless-plugin-gradle:6.18.0")
+    implementation("org.jmailen.gradle:kotlinter-gradle:3.16.0")
 }
