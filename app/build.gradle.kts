@@ -2,6 +2,11 @@ plugins {
     id("recipe-app.module")
     id("recipe-app.web-module")
     id("recipe-app.spring-boot")
+    application
+}
+
+application {
+    mainClass.set("li.raphael.recipe.app.RecipeAppKt")
 }
 
 dependencies {
@@ -59,8 +64,4 @@ assets {
             "fonts/merriweather/Latin-Merriweather-Bold.$extension",
         )
     }
-}
-
-tasks.register("run").configure {
-    dependsOn(tasks.bootRun)
 }
