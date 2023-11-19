@@ -1,17 +1,22 @@
 package li.raphael.recipe.app.shared.components
 
+import kotlinx.html.DIV
 import kotlinx.html.FlowContent
+import kotlinx.html.div
 import kotlinx.html.id
-import kotlinx.html.li
-import kotlinx.html.ul
+import li.raphael.kotlinhtml.tags.turboFrame
 
 fun FlowContent.uCardGroup(cards: List<Pair<String, FlowContent.() -> Unit>>) {
-    ul("usa-card-group") {
+    div("usa-card-group") {
         cards.forEach { (id, card) ->
-            li(" desktop:grid-col-3 tablet:grid-col-4 grid-col-12") {
-                this.id = id
-                card()
-            }
+            cardGroupItem(id, card)
         }
+    }
+}
+
+fun FlowContent.cardGroupItem(id: String, card: FlowContent.() -> Unit) {
+    turboFrame(id) {
+        classes = setOf("desktop:grid-col-3 tablet:grid-col-4 grid-col-12")
+        card()
     }
 }

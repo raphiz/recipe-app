@@ -22,8 +22,16 @@ class InMemoryRecipeRepository(recipes: List<Recipe>) : RecipeRepository {
     }
 
     override fun save(recipe: Recipe) {
-        this.recipes.removeIf { it.id == recipe.id }
-        this.recipes.add(recipe)
+        val index = this.recipes.indexOfFirst { it.id == recipe.id }
+        if (index > -1) {
+            this.recipes[index] = recipe
+        } else {
+            this.recipes.add(recipe)
+        }
+    }
+
+    override fun get(id: RecipeId): Recipe {
+        return this.recipes.single { it.id == id }
     }
 
     override fun delete(id: RecipeId) {

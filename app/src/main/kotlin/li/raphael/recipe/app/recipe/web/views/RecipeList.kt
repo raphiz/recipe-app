@@ -9,9 +9,13 @@ import li.raphael.recipe.app.Routes
 import li.raphael.recipe.app.components.renderPage
 import li.raphael.recipe.app.recipe.Recipe
 import li.raphael.recipe.app.recipe.RecipeId
-import li.raphael.recipe.app.shared.*
+import li.raphael.recipe.app.shared.PAGE_OFFSET
+import li.raphael.recipe.app.shared.PAGE_SIZE
+import li.raphael.recipe.app.shared.Page
+import li.raphael.recipe.app.shared.PagedList
 import li.raphael.recipe.app.shared.components.*
-import li.raphael.recipe.app.shared.components.IconType.*
+import li.raphael.recipe.app.shared.components.IconType.DELETE
+import li.raphael.recipe.app.shared.components.IconType.EDIT
 import li.raphael.recipe.app.shared.components.UButtonVariant.UNSTYLED
 
 const val recipeListId = "recipe-list"
@@ -41,10 +45,11 @@ fun FlowContent.renderPagedCardList(recipes: PagedList<Recipe>, searchText: Stri
     }
 }
 
-private fun FlowContent.recipeCard(recipe: Recipe, currentPage: Page, searchText: String?) {
+fun FlowContent.recipeCard(recipe: Recipe, currentPage: Page, searchText: String?) {
     uCard(
         title = {
             if (recipe.source != null) a(href = recipe.source.toString()) { +recipe.title } else +recipe.title
+            editRecipeButton(recipe, currentPage, searchText)
         },
         image = {
             img {
@@ -70,9 +75,24 @@ private fun FlowContent.deleteRecipeButton(recipe: Recipe, currentPage: Page, se
                 "turbo-confirm" to t("recipes.delete.confirm.message", recipe.title),
                 "turbo-confirm-title" to t("recipes.delete.confirm.title", recipe.title),
                 "turbo-confirm-button-style" to UButtonVariant.SECONDARY.classNames,
+                "turbo-frame" to "_top",
             )
             uIcon(DELETE)
             uScreenReaderOnly { +t("recipes.delete.confirm.title", recipe.title) }
+        }
+    }
+}
+
+private fun FlowContent.editRecipeButton(recipe: Recipe, currentPage: Page, searchText: String?) {
+    form(action = Routes.recipes.edit(recipe.id), method = FormMethod.get) {
+        style = "display: inline-block"
+        hiddenInput(name = PAGE_SIZE) { value = "${currentPage.size}" }
+        hiddenInput(name = PAGE_OFFSET) { value = "${currentPage.offset}" }
+        hiddenInput(name = RecipeRoutes.Params.searchFieldName) { value = searchText ?: "" }
+
+        uButton(UNSTYLED) {
+            uIcon(EDIT)
+            uScreenReaderOnly { +t("recipes.edit.title", recipe.title) }
         }
     }
 }

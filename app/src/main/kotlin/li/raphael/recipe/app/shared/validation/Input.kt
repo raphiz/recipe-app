@@ -5,7 +5,13 @@ import li.raphael.kotlinhtml.templatecontext.t
 import li.raphael.kotlinhtml.utils.data
 import kotlin.reflect.KProperty1
 
-fun FlowContent.validatedInput(property: KProperty1<*, String>, block: ValidationContext.() -> Unit, validationController: String = "validation", label: String) {
+fun FlowContent.validatedInput(
+    property: KProperty1<*, String>,
+    block: ValidationContext.() -> Unit,
+    validationController: String = "validation",
+    label: String,
+    fieldValue: String = "",
+) {
     val fieldId = property.name
 
     val validationContext = ValidationContext()
@@ -29,6 +35,7 @@ fun FlowContent.validatedInput(property: KProperty1<*, String>, block: Validatio
                 type = InputType.text
                 name = fieldId
                 required = validationContext.required
+                value = fieldValue
                 validationContext.validators.forEach { (_, validator) -> validator.modifyInput(this) }
                 data["validation-target"] = "input"
             }

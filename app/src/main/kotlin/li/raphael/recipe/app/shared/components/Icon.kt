@@ -14,6 +14,7 @@ fun FlowOrPhrasingContent.uIcon(type: IconType) {
 enum class IconType(val xHref: String) {
     CLOSE("close"),
     DELETE("delete"),
+    EDIT("edit"),
     NAVIGATE_BEFORE("navigate_before"),
     NAVIGATE_NEXT("navigate_next"),
     SEARCH("search"),
