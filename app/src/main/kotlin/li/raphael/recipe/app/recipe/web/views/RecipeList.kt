@@ -1,6 +1,8 @@
 package li.raphael.recipe.app.recipe.web.views
 
 import kotlinx.html.*
+import li.raphael.kotlinhtml.tags.TurboAction
+import li.raphael.kotlinhtml.tags.TurboAction.REPLACE
 import li.raphael.kotlinhtml.tags.turboFrame
 import li.raphael.kotlinhtml.templatecontext.t
 import li.raphael.kotlinhtml.utils.dataAttributes
@@ -33,7 +35,7 @@ private fun FlowContent.recipeList(recipes: PagedList<Recipe>, searchText: Strin
 }
 
 fun FlowContent.renderPagedCardList(recipes: PagedList<Recipe>, searchText: String?) {
-    turboFrame(recipeListId) {
+    turboFrame(recipeListId, turboAction = REPLACE) {
         uCardGroup(
             recipes.map { recipe ->
                 recipe.id.domId() to { recipeCard(recipe, recipes.page, searchText) }

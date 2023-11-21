@@ -1,6 +1,7 @@
 package li.raphael.kotlinhtml.tags
 
 import kotlinx.html.*
+import li.raphael.kotlinhtml.utils.filterValuesNotNull
 
 class Template(
     consumer: TagConsumer<*>,
@@ -15,6 +16,3 @@ inline fun FlowContent.template(id: String? = null, crossinline block: Template.
 @HtmlTagMarker
 inline fun MetaDataContent.template(id: String? = null, crossinline block: Template.() -> Unit) =
     Template(consumer, id).visit(block)
-
-private fun <K, V> Map<K, V?>.filterValuesNotNull() =
-    mapNotNull { (k, v) -> v?.let { k to v } }.toMap()
