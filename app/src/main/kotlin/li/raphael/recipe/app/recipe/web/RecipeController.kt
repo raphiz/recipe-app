@@ -62,8 +62,6 @@ class RecipeController(
     fun postEdit(
         @PathVariable id: String,
         @RequestParam("title") recipeTitle: String,
-        page: Page,
-        @RequestParam(RecipeRoutes.Params.searchFieldName) searchText: String?,
     ): View {
         val recipeId = RecipeId(UUID.fromString(id))
         val recipe = recipeRepository.get(recipeId).copy(title = recipeTitle)
@@ -72,12 +70,18 @@ class RecipeController(
         sseService.broadcast {
             turboStream(StreamAction.REPLACE, recipe.id.domId()) {
                 cardGroupItem(recipe.id.domId()) {
-                    recipeCard(recipe, page, searchText)
+                    recipeCard(recipe)
                 }
             }
         }
 
-        return HtmlView(HttpStatus.OK, TEXT_VND_TURBO_STREAM) { }
+        return HtmlView(HttpStatus.OK, TEXT_VND_TURBO_STREAM) {
+            turboStream(StreamAction.REPLACE, recipe.id.domId()) {
+                cardGroupItem(recipe.id.domId()) {
+                    recipeCard(recipe)
+                }
+            }
+        }
     }
 
     @GetMapping(RecipeRoutes.edit)

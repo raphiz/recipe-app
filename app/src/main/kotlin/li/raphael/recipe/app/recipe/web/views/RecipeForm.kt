@@ -47,7 +47,7 @@ fun FlowContent.editRecipeCard(recipe: Recipe, currentPage: Page, searchText: St
     form(method = FormMethod.post, action = Routes.recipes.edit(recipe.id)) {
         classes += "usa-form"
         dataAttributes(
-            "controller" to "form-validation",
+            "controller" to "form-validation,submit-with-query-params",
             "form-validation-target" to "form",
         )
         attributes["novalidate"] = ""
