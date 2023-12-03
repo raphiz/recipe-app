@@ -14,3 +14,7 @@ dialog::backdrop {
 [type="search"], .usa-search__input{
     border-right: 1px solid #565c65;
 }
+
+.turbo-progress-bar {
+    height: 10px;
+}
