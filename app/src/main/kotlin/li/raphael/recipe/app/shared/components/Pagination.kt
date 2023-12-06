@@ -65,8 +65,7 @@ fun pagesToDisplay(pagedList: PagedList<*>): List<Page?> {
     val pageCount = pagedList.pageCount
     val currentPage = pagedList.page.pageNumber
 
-    val maxNumberOfPages =
-        1 /* current element */ + 2 * (INCLUDE_FIRST_AND_LAST_N_PAGES + 1 /* null */ + INCLUDE_N_PAGES_BEFORE_AND_AFTER_CURRENT_PAGE)
+    val maxNumberOfPages = 1 + 2 * (INCLUDE_FIRST_AND_LAST_N_PAGES + 1 + INCLUDE_N_PAGES_BEFORE_AND_AFTER_CURRENT_PAGE)
     val end = maxNumberOfPages - 1 - INCLUDE_FIRST_AND_LAST_N_PAGES
 
     fun fromStart(n: Int) = 1..n

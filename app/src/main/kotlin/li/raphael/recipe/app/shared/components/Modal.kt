@@ -2,7 +2,14 @@ package li.raphael.recipe.app.shared.components
 
 import kotlinx.html.*
 
-fun FlowContent.modal(id: String, title: H2.() -> Unit, main: FlowContent.() -> Unit, footer: FlowContent.() -> Unit, customizer: DIALOG.() -> Unit = {}, closeLabel: String) {
+fun FlowContent.modal(
+    id: String,
+    title: H2.() -> Unit,
+    main: FlowContent.() -> Unit,
+    footer: FlowContent.() -> Unit,
+    customizer: DIALOG.() -> Unit = {},
+    closeLabel: String,
+) {
     dialog("usa-modal-wrapper is-hidden") {
         this.id = id
         customizer()

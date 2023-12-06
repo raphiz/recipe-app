@@ -106,7 +106,9 @@ class RecipeController(
     }
 
     @PostMapping(RecipeRoutes.create)
-    fun postCreate(@RequestParam("title") recipeTitle: String): View {
+    fun postCreate(
+        @RequestParam("title") recipeTitle: String,
+    ): View {
         Thread.sleep(2_000)
         recipeRepository.save(
             Recipe(

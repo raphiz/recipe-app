@@ -1,9 +1,7 @@
 package li.raphael.recipe.app.shared.components
 
-import kotlinx.html.DIV
 import kotlinx.html.FlowContent
 import kotlinx.html.div
-import kotlinx.html.id
 import li.raphael.kotlinhtml.tags.turboFrame
 
 fun FlowContent.uCardGroup(cards: List<Pair<String, FlowContent.() -> Unit>>) {
