@@ -1,6 +1,5 @@
 package li.raphael.recipe.app.shared.components
 
-import kotlinx.html.DIV
 import kotlinx.html.FlowContent
 import kotlinx.html.div
 import kotlinx.html.id
